@@ -1,0 +1,41 @@
+server:
+  port: 8084
+
+spring:
+  application:
+    name: Api-Gateway
+
+  cloud:
+    gateway:
+      routes:
+        #Product service routes
+        - id: product-service
+          uri: http://localhost:8081
+          predicates:
+            - Path=/api/product/**
+        #Order service routes
+        - id: order-service
+          uri: http://localhost:8082
+          predicates:
+            - Path=/api/order/**
+        #Registry service routes
+        - id: service-registry
+          uri: http://localhost:8761
+          predicates:
+            - Path=/eureka/web
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+logging:
+  level:
+    root: info
+    org:
+      springframework:
+        cloud:
+          gateway:
+            route:
+              routeDefinitionLocator: info
+
+
